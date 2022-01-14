@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import AddEvent from './AddEvent';
 import FSBFullCalendar from './FSBFullCalendar';
 import ShowEvent from './FSBFullCalendar/ShowEvent';
+import RemoveEvent from './RemoveEvent.js';
 
 const MyEvents = () => {
     const [weekendsVisible, setWeekendsVisible] = useState(true);
@@ -10,9 +11,14 @@ const MyEvents = () => {
         check: false,
         data: ""
     });
+    const [removeEvents, setRemoveEvents] = useState({
+        check: false,
+        data: ""
+    })
 
     const method = () => {
         setOpenModel({ check: false })
+        setRemoveEvents({ check: false, data: "" })
     }
 
     const handleWeekendsToggle = () => {
@@ -27,10 +33,13 @@ const MyEvents = () => {
     }
 
     const handleEventClick = (clickInfo) => {
-        if (window.confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-            clickInfo.event.remove()
-        }
+        setRemoveEvents({
+            check: true,
+            data: clickInfo
+        })
+
     }
+
 
     const handleEvents = (events) => {
         setCurrentEvents(events)
@@ -70,6 +79,7 @@ const MyEvents = () => {
                 </div>
             </div>
             {openmodel.check ? <AddEvent data={openmodel} method={method} /> : null}
+            {removeEvents.check ? <RemoveEvent data={removeEvents} method={method} /> : null}
         </div>
 
     )
